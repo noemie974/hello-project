@@ -15,16 +15,24 @@ configure_file(CMake/HelloProjConfig.h.in HelloProjConfig.h)
 add_subdirectory(Src/Basic)
 
 #add executable
-option(HELLOWORD_WITH_EXECUTABLES"Compile mains" ON)
+option(HELLOWORD_WITH_EXECUTABLES "Compile mains" ON)
 if(HELLOWORD_WITH_EXECUTABLES)
  message(STATUS "Configuring Hello World with executables")
  add_subdirectory(Main)
 endif()
 
 #add tests 
-option(HELLOWORLD_WITH_TESTS"compile tests" ON)
+option(HELLOWORLD_WITH_TESTS "compile tests" ON)
 if (HELLOWORLD_WITH_TESTS)
   enable_testing()
   message(STATUS"Configuring Hello World with tests")
   add_subdirectory(Test)
 endif()
+
+# create the package configuration file
+include(CMakePackageConfigHelpers) 
+configure_package_config_file(
+cmake/HelloProjConfig.cmake.in 
+HelloProjConfig.cmake 
+INSTALL_DESTINATION cmake/
+)
