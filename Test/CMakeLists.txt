@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-if(NOT TARGET basic)
+if(NOT TARGET Basic)
   # set the project name
   project(HelloProjTest)
   find_package(HelloProj)
