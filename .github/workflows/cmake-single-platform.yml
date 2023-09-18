@@ -36,7 +36,20 @@ jobs:
         cmake --build . -t essential
         cmake --build . -t install
         ctest --output-on-failure -j 2 -L essential
-    
+        
+    - name: Test
+      run: |
+        rm -rf $GITHUB_WORKSPACE/build/${{ inputs.directory }}/bin
+        mkdir -p test
+        cd test
+        cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH:PATH="${{ steps.repos.outputs.path }};$GITHUB_WORKSPACE/build/${{ inputs.directory }}/install;$GITHUB_WORKSPACE/build" ../tests
+        if [ "${{ matrix.config.shared }}" = "ON" ]; then 
+          cmake --build .
+          ctest --output-on-failure -j 2
+        else
+          cmake --build . -t essential
+          ctest --output-on-failure -j 2 -L essential
+        fi
     # steps:
     # - uses: actions/checkout@v3
 
