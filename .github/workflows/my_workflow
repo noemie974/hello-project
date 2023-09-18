@@ -1,0 +1,34 @@
+build-test:
+ runs-on: ubuntu-latest
+ steps:
+ - uses: actions/checkout@v2
+ - name: Compile
+   run: |
+     mkdir -p build
+     cd build
+     cmake -DCMAKE_BUILD_TYPE=Release ..
+     cmake --build . -- -j2
+ - name: Test
+   run: |
+     mkdir -p test
+     cd test
+     cmake -DCMAKE_BUILD_TYPE=Release ../tests
+     cmake --build . -- -j2
+     ctest --output-on-failure
+
+
+ - name: Generate package
+   run: |
+     mkdir -p build
+     cd build
+     cmake -DCMAKE_BUILD_TYPE=Release -DCPACK_PACKAGE_VERSION:STRING=1.0 -DCPACK_SYSTEM_NAME:STRING=linux-Release ..
+     cmake --build . -- -j2
+     cmake --build . --target package
+  
+  - name: Upload
+   uses: softprops/action-gh-release@v1
+   with:
+   files: 
+  "build/FirstOrganizeCMake-1.0-linux-Release.tar.gz"
+   env:
+   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
