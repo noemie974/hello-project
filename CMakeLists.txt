@@ -15,7 +15,7 @@ configure_file(CMake/HelloProjConfig.h.in HelloProjConfig.h)
 add_subdirectory(Src/Basic)
 
 #add executable
-option(HELLOWORD_WITH_EXECUTABLES "Compile mains" ON)
+option(HELLOWORD_WITH_EXECUTABLES "Compile mains" OFF)
 if(HELLOWORD_WITH_EXECUTABLES)
  message(STATUS "Configuring Hello World with executables")
  add_subdirectory(Main)
